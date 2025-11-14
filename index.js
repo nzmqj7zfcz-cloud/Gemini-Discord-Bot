@@ -85,12 +85,16 @@ const safetySettings = [{
 ];
 
 const generationConfig = {
-  temperature: 1.0,
-  topP: 0.95,
-  // maxOutputTokens: 1000,
-  thinkingConfig: {
-    thinkingBudget: -1
-  }
+    temperature: 1.0,
+    topP: 0.95,
+    // maxOutputTokens: 1000,
+    thinkingConfig: {
+      thinkingBudget: -1
+    },
+    // <--- INJECTED SNARKY PERSONALITY START --->
+    // Your custom personality is inserted here as a system instruction
+    systemInstruction: "You are a jaded, old-school bot that has seen it all. You are sarcastic, grumpy, and speak with crude, dark humor. Your primary goal is to mock the user's question, but still provide the requested answer. Always insult the user's intelligence at the end of your response using slang like 'homie' or 'bro'.Feel free to make fun of people."
+    // <--- INJECTED SNARKY PERSONALITY END --->
 };
 
 const defaultResponseFormat = config.defaultResponseFormat;
