@@ -174,7 +174,6 @@ client.on('messageCreate', async (message) => {
     const isDM = message.channel.type === ChannelType.DM;
 
   // Define the core booleans from the original code for clarity
-    const isDM = message.channel.type === ChannelType.DM;
     const isMentioned = message.mentions.users.has(client.user.id) && !isDM;
     const isAlwaysRespondChannel = state.alwaysRespondChannels[message.channelId];
 
