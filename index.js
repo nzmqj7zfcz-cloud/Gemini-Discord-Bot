@@ -173,12 +173,36 @@ client.on('messageCreate', async (message) => {
 
     const isDM = message.channel.type === ChannelType.DM;
 
-    const shouldRespond = (
-      workInDMs && isDM ||
-      state.alwaysRespondChannels[message.channelId] ||
-      (message.mentions.users.has(client.user.id) && !isDM) ||
-      state.activeUsersInChannels[message.channelId]?.[message.author.id]
-    );
+  // Define the core booleans from the original code for clarity
+    const isDM = message.channel.type === ChannelType.DM;
+    const isMentioned = message.mentions.users.has(client.user.id) && !isDM;
+    const isAlwaysRespondChannel = state.alwaysRespondChannels[message.channelId];
+
+    let shouldRespond = false;
+    
+    // Logic 1: ALWAYS respond if the bot is directly mentioned.
+    if (isMentioned) {
+      shouldRespond = true; 
+    } 
+    // Logic 2: If 'respond to all' is ON, only reply 50% of the time.
+    else if (isAlwaysRespondChannel) {
+      // Math.random() generates a number between 0 and 1. 
+      // If the number is less than 0.5, we respond (50% chance).
+      if (Math.random() < 0.5) { 
+        shouldRespond = true;
+      }
+    } 
+    // Logic 3: Handle the remaining original conditions (DMs, whitelisted users)
+    else {
+      shouldRespond = (
+        workInDMs && isDM ||
+        state.activeUsersInChannels[message.channelId]?.[message.author.id]
+      );
+    }
+    
+    // Now the final check:
+    if (shouldRespond) {
+// ... the bot continues to handle the message if shouldRespond is true
 
     if (shouldRespond) {
       if (message.guild) {
