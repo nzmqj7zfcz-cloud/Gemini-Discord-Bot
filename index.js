@@ -1675,12 +1675,6 @@ async function handleSubButtonInteraction(interaction, update = false) {
   const responseMode = getUserResponsePreference(userId);
   const subButtonConfigs = {
     'general-settings': [{
-        customId: 'always-respond',
-        label: `Always Respond: ${state.activeUsersInChannels[channelId][userId] ? 'ON' : 'OFF'}`,
-        emoji: '↩️',
-        style: ButtonStyle.Secondary
-      },
-      {
         customId: 'toggle-response-mode',
         label: `Toggle Response Mode: ${responseMode}`,
         emoji: '📝',
