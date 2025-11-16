@@ -171,10 +171,8 @@ client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
     if (message.content.startsWith('!')) return;
 
-    const isDM = message.channel.type === 
+    const isDM = message.channel.type === ChannelType.DM;
 
-      
-      
     const shouldRespond = (
       workInDMs && isDM ||
       state.alwaysRespondChannels[message.channelId] ||
@@ -182,7 +180,19 @@ client.on('messageCreate', async (message) => {
       state.activeUsersInChannels[message.channelId]?.[message.author.id]
     );
 
-    
+    if (shouldRespond) {
+      if (message.guild) {
+        initializeBlacklistForGuild(message.guild.id);
+        if (state.blacklistedUsers[message.guild.id].includes(message.author.id)) {
+          const embed = new EmbedBuilder()
+            .setColor(0xFF0000)
+            .setTitle('Blacklisted')
+            .setDescription('You are blacklisted and cannot use this bot.');
+          return message.reply({
+            embeds: [embed]
+          });
+        }
+      }
       if (activeRequests.has(message.author.id)) {
         const embed = new EmbedBuilder()
           .setColor(0xFFFF00)
