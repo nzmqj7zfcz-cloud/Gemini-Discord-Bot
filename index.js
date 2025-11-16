@@ -173,12 +173,24 @@ client.on('messageCreate', async (message) => {
 
     const isDM = message.channel.type === ChannelType.DM;
 
-    const shouldRespond = (
-      workInDMs && isDM ||
-      state.alwaysRespondChannels[message.channelId] ||
-      (message.mentions.users.has(client.user.id) && !isDM) ||
-      state.activeUsersInChannels[message.channelId]?.[message.author.id]
-    );
+    // --- START OF NEW CODE ---
+    // 1. Check if the message is in the channel named 'chat'
+    const isChatChannel = !isDM && message.channel.name === 'chat';
+
+    // 2. Run a 50% "coin flip"
+    const coinFlip = Math.random() < 0.5;
+    // --- END OF NEW CODE ---
+
+
+    const shouldRespond = (
+      workInDMs && isDM ||
+      state.alwaysRespondChannels[message.channelId] ||
+      (message.mentions.users.has(client.user.id) && !isDM) ||
+      state.activeUsersInChannels[message.channelId]?.[message.author.id] ||
+
+      // --- ADD THIS NEW LINE ---
+      (isChatChannel && coinFlip) // Respond if it's the chat channel AND the coin flip passed
+    );
 
     if (shouldRespond) {
       if (message.guild) {
