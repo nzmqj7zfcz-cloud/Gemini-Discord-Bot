@@ -171,38 +171,10 @@ client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
     if (message.content.startsWith('!')) return;
 
-    const isDM = message.channel.type === ChannelType.DM;
-    
-        // Define variables needed for the 50% chance logic
-    const isMentioned = message.mentions.users.has(client.user.id) && !isDM;
-    const isAlwaysRespondChannel = state.alwaysRespondChannels[message.channelId];
-    
-    let shouldRespond = false;
-    
-    // Logic 1: ALWAYS respond if the bot is directly mentioned.
-    if (isMentioned) {
-        shouldRespond = true; 
-    } 
-    // Logic 2: If 'respond to all' is ON, apply the 50% chance.
-    else if (isAlwaysRespondChannel) {
-        // Only respond 50% of the time if 'respond to all' is active.
-        // Math.random() is the coin flip (a number between 0 and 1).
-        if (Math.random() < 0.5) { 
-            shouldRespond = true;
-        }
-    } 
-    // Logic 3: Handle the remaining original conditions (DMs, whitelisted users)
-    else {
-        shouldRespond = (
-            workInDMs && isDM ||
-            state.activeUsersInChannels[message.channelId]?.[message.author.id]
-        );
-    }
-    
-    // Now we SKIP the original 'shouldRespond' calculation and use our new, random one.
-    // The rest of the message handling logic (if (shouldRespond) { ... ) will now use this randomized result.
-    
+    const isDM = message.channel.type === 
 
+      
+      
     const shouldRespond = (
       workInDMs && isDM ||
       state.alwaysRespondChannels[message.channelId] ||
